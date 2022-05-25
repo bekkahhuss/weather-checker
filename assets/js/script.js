@@ -29,15 +29,12 @@ var nameInput = document.getElementById('city-search-input');
 
 document.querySelector('form.city-form').addEventListener('submit', function (e) {
 
-    //prevent the normal submission of the form
     e.preventDefault();
 
     getCity(nameInput.value);    
 });
 
 var getCity = function(userInput) {
-    // var userInput = document.querySelector("#city-search-input").value;
-    // document.querySelector("#city-search-input").value = "";
     
     var apiCityUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + userInput + "&limit=5&appid=" + apiKey;
         fetch(apiCityUrl).then(function(response) {
@@ -61,7 +58,6 @@ var getWeatherData = function(input) {
         .then(function(response) {
             if (response.ok) {
                 response.json().then(function(data) {
-                    // displaySearchResult(data);
                     console.log(data);
                 });
             } else {
