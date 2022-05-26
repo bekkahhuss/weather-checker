@@ -59,6 +59,7 @@ var getWeatherData = function(input) {
             if (response.ok) {
                 response.json().then(function(data) {
                     console.log(data);
+                    getForecast(input);
                 });
             } else {
                 alert("Error: " + response.statusText)
@@ -70,5 +71,27 @@ var getWeatherData = function(input) {
 };
 
 
+var getForecast = function (input) {
+    // var apiForecastUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + input.Lat + "&lon=" + input.Long + "&cnt=5&appid=" + apiKey;
+    var apiForecastUrl_1 = "https://api.openweathermap.org/data/2.5/onecall?lat=" + input.Lat + "&lon=" + input.Long + "&cnt=5&appid=" + apiKey + "&units=imperial";
+    fetch(apiForecastUrl_1)
+        .then(function(response) {
+            if (response.ok) {
+                response.json().then(function(data) {
+                    console.log(data);
+                    displayCurrentWeather(data, input);
+                    buildForecast(data);
+                    
+                });
+            } else {
+                alert("Error: " + response.statusText)
+            }
+        })
+        .catch(function(error) {
+            alert("Unable to connect to OpenWeather");
+        });
+        
+}
+
+
 getCity();
-getWeatherData();
