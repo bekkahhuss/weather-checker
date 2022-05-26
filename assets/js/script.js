@@ -163,10 +163,11 @@ var weatherToday = function(weatherData,city) {
 var weatherForecast = function(data) {
     // Build the 5 day forecast
     var extendedForecastEl = document.createElement("div");
-    extendedForecastEl.className = "complete-forecast";
-    var fiveDayHeaderEl = document.createElement("h3");
-    fiveDayHeaderEl.textContent = "5-Day Forecast";
     var dayCardContainerEl = document.createElement("div");
+    var fiveDayHeaderEl = document.createElement("h3");
+    
+    extendedForecastEl.className = "complete-forecast";
+    fiveDayHeaderEl.textContent = "5-Day Forecast";
     dayCardContainerEl.className = "day-card-container";
 
     // Display the forecast section title
@@ -179,20 +180,22 @@ var weatherForecast = function(data) {
         // Create the elements for the weather card
         var date = dateConvert(data.daily[index].dt);
         var forecastCardEl = document.createElement("div");
-        forecastCardEl.className = "day-card";
         var foreCardHeadEl = document.createElement("div");
-        foreCardHeadEl.className = "forecast-head";
         var foreCardInfoEl = document.createElement("div");
-        foreCardInfoEl.className = "forecast-info";
         var forecastDateEl = document.createElement("h4");
-        forecastDateEl.textContent = date.Day;
         var forecastIconEl = document.createElement("img");
-        forecastIconEl.src = iconApiUrl;
         var forecastTempEl = document.createElement("p");
-        forecastTempEl.textContent = "Temp:      " + data.daily[index].temp.max + " F";
         var forecastWindEl = document.createElement("p");
-        forecastWindEl.textContent = "Wind:     " + data.daily[index].wind_speed + " mph";
         var forecastHumidityEl = document.createElement("p");
+
+
+        forecastCardEl.className = "day-card";
+        foreCardHeadEl.className = "forecast-head";
+        foreCardInfoEl.className = "forecast-info";
+        forecastDateEl.textContent = date.Day;
+        forecastIconEl.src = iconApiUrl;
+        forecastTempEl.textContent = "Temp:      " + data.daily[index].temp.max + " F";
+        forecastWindEl.textContent = "Wind:     " + data.daily[index].wind_speed + " mph";
         forecastHumidityEl.textContent = "Humidity:     " + data.daily[index].humidity + " %";
 
         // append the weather data to the weather card
@@ -201,7 +204,7 @@ var weatherForecast = function(data) {
         foreCardInfoEl.appendChild(forecastTempEl);
         foreCardInfoEl.appendChild(forecastWindEl);
         foreCardInfoEl.appendChild(forecastHumidityEl);
-        
+
         // Append daily weather card to the container
         forecastCardEl.appendChild(foreCardHeadEl);
         forecastCardEl.appendChild(foreCardInfoEl);
