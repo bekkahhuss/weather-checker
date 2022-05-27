@@ -28,5 +28,5 @@ Don't forget to check the weather before your trip! Use the Weather Checker appl
 - Variables
 
 ## Screenshots
-[Weather-Checker]()
-[Forecast]()
+[Weather-Checker](https://github.com/bekkahhuss/weather-checker/blob/main/assets/images/weather-checker.png)
+[Forecast](https://github.com/bekkahhuss/weather-checker/blob/main/assets/images/forecast%20.png)
