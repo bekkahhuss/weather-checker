@@ -23,6 +23,10 @@ var month = [
     "December"
 ];
 
+
+
+var cityHistoryObj = [{}];
+
 var apiKey = "0d14ac98a1874c4037b8dd76c4fc2bd7";
 
 var nameInput = document.getElementById('city-search-input');
@@ -44,10 +48,14 @@ var getCity = function(userInput) {
                     console.log(cityObj);
                     // console.log(userInput);
                     getWeatherData(cityObj);
+                    updateCityHistory(cityObj);
+                    updateCityDisplay();
                 }
             )}
         })
 };
+
+
 
 var getWeatherData = function(input) {
     var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + input.Lat + "&lon=" + input.Long + "&exclude=hourly,daily&appid=" + apiKey;
@@ -212,6 +220,59 @@ var weatherForecast = function(data) {
     }
 };
 
+
+var pullHistory = function() {
+    cityHistoryObj = JSON.parse(localStorage.getItem("cityhistory"));
+   
+};
+
+var updateCityHistory = function(cityObj) {
+    // if the city is already in history, remove it and move it to index 0
+    for (var removeIndex = 0; removeIndex < cityHistoryObj.length; removeIndex++) {
+        if (cityObj.Name == cityHistoryObj[removeIndex].Name) {
+            cityHistoryObj.splice(removeIndex,1);
+        };
+    };
+    // Insert new city data in the 0 index position
+    cityHistoryObj.unshift(cityObj);
+    // Trim the city data object to only keep the most recent 10 in memory
+    cityHistoryObj = cityHistoryObj.slice(0,10);
+    localStorage.setItem("cityhistory", JSON.stringify(cityHistoryObj));
+};
+
+
+var updateCityDisplay = function () {
+    // find container and create list items for the city history
+    var cityListEl = document.querySelector(".city-list");
+    // clear old list out of container
+    cityListEl.innerHTML = "";
+    // Cycle through the city data and build the clickable city history list
+    for (let index=0 ; index<cityHistoryObj.length ; index++) {
+        if (cityHistoryObj[index].Name) {
+        var cityHistoryItemEl = document.createElement("li")
+        cityHistoryItemEl.className = "city-item"
+        var cityHistoryBtnEl = document.createElement("button")
+        cityHistoryBtnEl.dataset.listPosition = index;
+        cityHistoryBtnEl.textContent = cityHistoryObj[index].Name;
+        cityHistoryBtnEl.className = "city-button"
+        cityHistoryItemEl.appendChild(cityHistoryBtnEl);
+        cityListEl.appendChild(cityHistoryItemEl);
+        };
+    }
+};
+
+var clickHistory = function () {
+    document.querySelector(".city-list").addEventListener("click", function(event) {
+        targetClickEl = event.target
+        index = targetClickEl.dataset.listPosition;
+        var cityChoiceObj = cityHistoryObj.splice(index,1);
+        cityHistoryObj.unshift(cityChoiceObj[0]);
+        getWeatherData(cityChoiceObj[0]);
+        updateCityDisplay();
+        updateCityHistory(cityChoiceObj[0]);
+    })
+};
+
 var dateConvert = function(date) {
     // Convert UNIX time code passed to function to JS date/time
     fullDateConverted = new Date(date * 1000);
@@ -225,3 +286,4 @@ var dateConvert = function(date) {
     return dayDateObject;
 };
 getCity();
+clickHistory();
